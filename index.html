@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    
+    <!-- Styles CSS personnalisés -->
+    <link rel="stylesheet" href="CSS/style.css">
+
+    <!-- Script JavaScript personnalisé -->
+    <script src="Java/Java.js" defer></script>
+
+    <!-- Police Montserrat via Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Icônes Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!--Police Audiowide-->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Animation d'introduction -->
+    <div id="intro-animation">
+        <span>B</span><span>I</span><span>E</span><span>N</span><span>V</span><span>E</span><span>N</span><span>U</span><span>E</span>
+    </div>
+    
+    <!-- Contenu principal caché initialement -->
+    <div id="main-content" class="hidden">
+
+        <!-- Conteneur vidéo de fond -->
+        <div id="video-container">
+            <video autoplay loop muted id="video-bg">
+                <source src="Image/INSTA_1.mp4" type="video/mp4">
+            </video>
+            <div id="video-overlay"></div>
+        </div>
+
+        <!-- En-tête du site avec navigation -->
+        <header>
+            <nav id="navbar">
+                <div class="menu-icon" id="menu-toggle">
+                    <i class="fas fa-bars"></i> Menu
+                </div>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#about">À Propos</a></li>
+                    <li><a href="#skills">Mes Compétences</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Texte introductif principal -->
+            <div class="hero-content">
+                <h1>PORTFOLIO</h1>
+                <p class="hunt-arnaud">HUNT ARNAUD</p><br><p class="graphic-designer">GRAPHIC DESIGNER</p>
+                <a href="#about" class="btn-discover">Découvrir <i class="fas fa-arrow-down"></i></a>
+            </div>
+        </header>
+
+        <!-- Section À Propos avec CV -->
+        <section id="about" class="section">
+            <div class="glass-container">
+                <h2>À Propos</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p class="about-description">
+                            Bienvenue sur mon portfolio, un espace où je partage mes créations visuelles et mes projets innovants.
+                        </p>
+                        <p class="about-description">
+                            Je suis HUNT ARNAUD, étudiant en 2ème année de BUT MMI, passionné par le design et le développement.
+                        </p>
+                        
+                        <div class="about-actions">
+                            <a href="https://www.butmmi.fr" class="minimalist-btn" target="_blank">
+                                <i class="fas fa-graduation-cap"></i> Ma Formation
+                            </a>
+                            <button class="cv-btn glass-btn" onclick="openCV()">
+                                <i class="fas fa-file-pdf"></i> Voir mon CV
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="about-image">
+                        <div class="image-placeholder"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Mes Compétences - UE du BUT MMI -->
+        <section id="skills" class="section">
+            <div class="glass-container">
+                <h2>Mes Compétences</h2>
+                <p class="ue-description">Découvrez mes compétences à travers les 5 Unités d'Enseignement du BUT MMI</p>
+                
+                <div class="ue-grid">
+                    <!-- UE 1 - Comprendre -->
+                    <div class="ue-card glass-card" data-ue="comprendre">
+                        <div class="ue-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Comprendre</h3>
+                        <p>Analyser les usages et les besoins des utilisateurs</p>
+                        <div class="ue-skills">
+                            <span>Analyse d'usages</span>
+                            <span>Étude utilisateur</span>
+                            <span>Recherche UX</span>
+                        </div>
+                        <button class="ue-btn">Voir les projets</button>
+                    </div>
+
+                    <!-- UE 2 - Concevoir -->
+                    <div class="ue-card glass-card" data-ue="concevoir">
+                        <div class="ue-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Concevoir</h3>
+                        <p>Concevoir une réponse stratégique pertinente</p>
+                        <div class="ue-skills">
+                            <span>Stratégie digitale</span>
+                            <span>Design thinking</span>
+                            <span>Conception UX</span>
+                        </div>
+                        <button class="ue-btn">Voir les projets</button>
+                    </div>
+
+                    <!-- UE 3 - Exprimer -->
+                    <div class="ue-card glass-card" data-ue="exprimer">
+                        <div class="ue-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3>Exprimer</h3>
+                        <p>Exprimer un message avec les médias numériques</p>
+                        <div class="ue-skills">
+                            <span>Design graphique</span>
+                            <span>Identité visuelle</span>
+                            <span>Communication</span>
+                        </div>
+                        <button class="ue-btn">Voir les projets</button>
+                    </div>
+
+                    <!-- UE 4 - Développer -->
+                    <div class="ue-card glass-card" data-ue="developper">
+                        <div class="ue-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Développer</h3>
+                        <p>Développer pour les médias numériques</p>
+                        <div class="ue-skills">
+                            <span>HTML/CSS</span>
+                            <span>JavaScript</span>
+                            <span>Développement web</span>
+                        </div>
+                        <button class="ue-btn">Voir les projets</button>
+                    </div>
+
+                    <!-- UE 5 - Entreprendre -->
+                    <div class="ue-card glass-card" data-ue="entreprendre">
+                        <div class="ue-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Entreprendre</h3>
+                        <p>Entreprendre dans le secteur du numérique</p>
+                        <div class="ue-skills">
+                            <span>Gestion de projet</span>
+                            <span>Innovation</span>
+                            <span>Entrepreneuriat</span>
+                        </div>
+                        <button class="ue-btn">Voir les projets</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sections des projets par UE (cachées par défaut) -->
+        
+        <!-- Projets UE Comprendre -->
+        <section id="ue-comprendre" class="ue-projects-section hidden">
+            <div class="glass-container">
+                <div class="ue-header">
+                    <button class="back-btn" onclick="showMainSkills()">
+                        <i class="fas fa-arrow-left"></i> Retour aux compétences
+                    </button>
+                    <h2><i class="fas fa-brain"></i> Comprendre</h2>
+                    <p>Projets d'analyse et de recherche utilisateur</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Les projets seront ajoutés ici -->
+                    <div class="project-placeholder glass-card">
+                        <h4>Projet à venir</h4>
+                        <p>Vos projets de l'UE Comprendre apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projets UE Concevoir -->
+        <section id="ue-concevoir" class="ue-projects-section hidden">
+            <div class="glass-container">
+                <div class="ue-header">
+                    <button class="back-btn" onclick="showMainSkills()">
+                        <i class="fas fa-arrow-left"></i> Retour aux compétences
+                    </button>
+                    <h2><i class="fas fa-lightbulb"></i> Concevoir</h2>
+                    <p>Projets de conception et stratégie</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-placeholder glass-card">
+                        <h4>Projet à venir</h4>
+                        <p>Vos projets de l'UE Concevoir apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projets UE Exprimer -->
+        <section id="ue-exprimer" class="ue-projects-section hidden">
+            <div class="glass-container">
+                <div class="ue-header">
+                    <button class="back-btn" onclick="showMainSkills()">
+                        <i class="fas fa-arrow-left"></i> Retour aux compétences
+                    </button>
+                    <h2><i class="fas fa-palette"></i> Exprimer</h2>
+                    <p>Projets de design et communication visuelle</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-placeholder glass-card">
+                        <h4>Projet à venir</h4>
+                        <p>Vos projets de l'UE Exprimer apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projets UE Développer -->
+        <section id="ue-developper" class="ue-projects-section hidden">
+            <div class="glass-container">
+                <div class="ue-header">
+                    <button class="back-btn" onclick="showMainSkills()">
+                        <i class="fas fa-arrow-left"></i> Retour aux compétences
+                    </button>
+                    <h2><i class="fas fa-code"></i> Développer</h2>
+                    <p>Projets de développement web et applications</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-placeholder glass-card">
+                        <h4>Projet à venir</h4>
+                        <p>Vos projets de l'UE Développer apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projets UE Entreprendre -->
+        <section id="ue-entreprendre" class="ue-projects-section hidden">
+            <div class="glass-container">
+                <div class="ue-header">
+                    <button class="back-btn" onclick="showMainSkills()">
+                        <i class="fas fa-arrow-left"></i> Retour aux compétences
+                    </button>
+                    <h2><i class="fas fa-rocket"></i> Entreprendre</h2>
+                    <p>Projets entrepreneuriaux et gestion</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-placeholder glass-card">
+                        <h4>Projet à venir</h4>
+                        <p>Vos projets de l'UE Entreprendre apparaîtront ici</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Contact avec formulaire -->
+        <section id="contact" class="section">
+            <div class="glass-container">
+                <h2>Contact</h2>
+                <p>Envie de collaborer ? Envoyez-moi un message !</p>
+            
+                <div class="contact-container">
+                    <form id="contact-form" class="glass-form">
+                        <!-- Champ Nom -->
+                        <div class="input-container">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="name" placeholder="Nom" required>
+                        </div>
+            
+                        <!-- Champ Email -->
+                        <div class="input-container">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+            
+                        <!-- Champ Message -->
+                        <div class="input-container">
+                            <i class="fas fa-comment-alt"></i>
+                            <textarea name="message" placeholder="Votre message" required></textarea>
+                        </div>
+            
+                        <!-- Bouton Envoyer -->
+                        <button type="submit" class="submit-btn glass-btn">
+                            <i class="fas fa-paper-plane"></i> Envoyer
+                        </button>
+                    </form>
+                    <p id="form-message"></p>
+                </div>
+            </div>
+        </section>
+            
+        <!-- Bouton retour en haut -->
+        <div id="scroll-to-top" class="scroll-to-top glass-element">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+
+    </div>
+
+    <!-- Modal CV Stylée -->
+    <div id="cv-modal" class="cv-modal hidden">
+        <div class="cv-modal-overlay" onclick="closeCV()"></div>
+        <div class="cv-modal-content">
+            <div class="cv-modal-header">
+                <h3><i class="fas fa-file-pdf"></i> Mon CV</h3>
+                <button class="cv-close-btn" onclick="closeCV()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cv-modal-body">
+                <div class="cv-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Chargement du CV...</p>
+                </div>
+                <iframe id="cv-iframe" src="" frameborder="0"></iframe>
+            </div>
+            <div class="cv-modal-footer">
+                <a href="Image/CV/cv Arnaud Hunt numérique.pdf" class="cv-download-btn glass-btn" download target="_blank">
+                    <i class="fas fa-download"></i> Télécharger le CV
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer glass-footer">
+        <div class="footer-container">
+            <p>&copy; 2025 HUNT ARNAUD - Tous droits réservés</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/nao_yah/" target="_blank" class="glass-social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/ton_linkedin" target="_blank" class="glass-social-btn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
