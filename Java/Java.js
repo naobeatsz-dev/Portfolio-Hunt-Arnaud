@@ -47,11 +47,10 @@ function initializePortfolio() {
     // Initialiser le bouton scroll to top
     initializeScrollToTop();
     
-    // Initialiser la modal CV
+    // Initialiser la modal CV (sans l'ouvrir)
     initializeCVModal();
     
-    // Afficher la première section
-    showSection('about');
+    console.log('Portfolio initialisé avec succès');
 }
 
 // ===============================
@@ -130,17 +129,15 @@ function initializeNavigation() {
 // ===============================
 
 function initializeUECards() {
-    const ueCards = document.querySelectorAll('.ue-card');
-    
-    ueCards.forEach(card => {
-        const ueBtn = card.querySelector('.ue-btn');
-        const ueName = card.getAttribute('data-ue');
-        
+    // Sélectionne les cartes de la timeline (nouveau design)
+    const ueCardsNew = document.querySelectorAll('.ue-card-new');
+    ueCardsNew.forEach(card => {
+        const ueBtn = card.querySelector('.ue-btn-new');
+        const ueName = card.parentElement.getAttribute('data-ue');
         // Clic sur la carte entière
         card.addEventListener('click', function() {
             showUEProjects(ueName);
         });
-        
         // Clic sur le bouton
         if (ueBtn) {
             ueBtn.addEventListener('click', function(e) {
@@ -148,12 +145,32 @@ function initializeUECards() {
                 showUEProjects(ueName);
             });
         }
-        
-        // Effet de hover amélioré
+        // Effet de hover
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-12px) scale(1.02)';
         });
-        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Sélectionne les anciennes cartes (si présentes)
+    const ueCards = document.querySelectorAll('.ue-card');
+    ueCards.forEach(card => {
+        const ueBtn = card.querySelector('.ue-btn');
+        const ueName = card.getAttribute('data-ue');
+        card.addEventListener('click', function() {
+            showUEProjects(ueName);
+        });
+        if (ueBtn) {
+            ueBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                showUEProjects(ueName);
+            });
+        }
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-12px) scale(1.02)';
+        });
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
@@ -268,15 +285,22 @@ window.addEventListener('popstate', function(event) {
 });
 
 // ===============================
-// GESTION DE LA MODAL CV
+// GESTION DE LA MODAL CV (CORRIGÉE)
 // ===============================
 
 function initializeCVModal() {
-    // La modal CV ne s'initialise que lors du clic sur le bouton
-    console.log('Modal CV initialisée - prête pour ouverture sur clic');
+    // Simplement s'assurer que la modal est fermée au démarrage
+    const modal = document.getElementById('cv-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+    }
+    
+    console.log('Modal CV initialisée - fermée par défaut');
 }
 
-// Fonction pour ouvrir le CV (appelée par le bouton)
+// Fonction pour ouvrir le CV (appelée uniquement par le bouton)
 function openCV() {
     const modal = document.getElementById('cv-modal');
     const iframe = document.getElementById('cv-iframe');
@@ -307,7 +331,7 @@ function openCV() {
         }
         
         // Charger le PDF
-        iframe.src = 'Image/CV/cv Arnaud Hunt numérique.pdf'; // Mettez le bon chemin ici
+        iframe.src = 'Image/CV/cv Arnaud Hunt numérique.pdf';
         
         // Masquer le loading une fois chargé
         iframe.onload = function() {
@@ -418,13 +442,6 @@ function scrollToSection(sectionId) {
     }
 }
 
-function showSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.classList.add('show');
-    }
-}
-
 // ===============================
 // FORMULAIRE DE CONTACT
 // ===============================
@@ -432,47 +449,57 @@ function showSection(sectionId) {
 function initializeContactForm() {
     const form = document.getElementById('contact-form');
     const submitBtn = form ? form.querySelector('.submit-btn') : null;
-    const messageDiv = document.getElementById('form-message');
     
     if (!form || !submitBtn) return;
     
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Récupérer les données du formulaire
+        const formData = new FormData(form);
+        const nom = formData.get('nom') || document.getElementById('user_name').value;
+        const email = formData.get('email') || document.getElementById('user_email').value;
+        const message = formData.get('message') || document.getElementById('user_message').value;
+        
+        // Validation simple
+        if (!nom || !email || !message) {
+            showNotification('Veuillez remplir tous les champs', 'error');
+            return;
+        }
+        
         // Animation du bouton
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
         submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
         
-        // Récupérer les données
-        const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const message = formData.get('message');
+        // Créer le lien mailto
+        const subject = encodeURIComponent(`Contact Portfolio - ${nom}`);
+        const body = encodeURIComponent(`
+Nom: ${nom}
+Email: ${email}
+
+Message:
+${message}
+
+---
+Envoyé depuis le portfolio de Hunt Arnaud
+        `);
         
-        // Simulation d'envoi
+        const mailtoLink = `mailto:hunt.arnaud@example.com?subject=${subject}&body=${body}`;
+        
+        // Simulation d'envoi puis ouverture du client email
         setTimeout(() => {
-            // Succès
-            submitBtn.innerHTML = '<i class="fas fa-check"></i> Envoyé !';
-            submitBtn.style.background = 'rgba(76, 175, 80, 0.2)';
-            submitBtn.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+            // Ouvrir le client email
+            window.location.href = mailtoLink;
             
             // Message de confirmation
-            showNotification('Message envoyé avec succès !', 'success');
+            showNotification('Votre client email va s\'ouvrir', 'success');
             
-            // Reset du formulaire
+            // Reset du formulaire et du bouton
             form.reset();
-            
-            // Remettre le bouton normal
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
-                submitBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-                submitBtn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-            }, 3000);
-        }, 2000);
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 1500);
     });
     
     // Effets sur les champs de saisie
@@ -496,7 +523,7 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check' : 'info'}"></i>
+        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}"></i>
         <span>${message}</span>
     `;
     
@@ -527,6 +554,8 @@ function showNotification(message, type = 'info') {
     // Couleurs selon le type
     if (type === 'success') {
         notification.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+    } else if (type === 'error') {
+        notification.style.borderColor = 'rgba(244, 67, 54, 0.5)';
     }
     
     document.body.appendChild(notification);
@@ -590,7 +619,7 @@ window.addEventListener('scroll', function() {
     const glassElements = document.querySelectorAll('.glass-container');
     
     glassElements.forEach((element, index) => {
-        const speed = (index % 2 === 0) ? 0.02 : -0.02; // Très léger
+        const speed = (index % 2 === 0) ? 0.02 : -0.02;
         const yPos = scrolled * speed;
         element.style.transform = `translateY(${yPos}px)`;
     });
@@ -613,7 +642,6 @@ function handleMobileNavigation() {
     const navLinks = document.getElementById('nav-links');
     
     if (isMobile && navLinks) {
-        // Ajustements spécifiques mobile
         navLinks.style.width = '100vw';
         navLinks.style.left = '-100vw';
     }
@@ -622,22 +650,11 @@ function handleMobileNavigation() {
 window.addEventListener('resize', handleMobileNavigation);
 
 // ===============================
-// INITIALISATION FINALE
-// ===============================
-
-// Démarrage automatique si l'animation d'intro est désactivée
-if (!document.getElementById('intro-animation') || 
-    document.getElementById('intro-animation').style.display === 'none') {
-    document.addEventListener('DOMContentLoaded', initializePortfolio);
-}
-
-// ===============================
 // FONCTIONS GLOBALES (accessibles depuis HTML)
 // ===============================
 
-// Ces fonctions doivent être globales pour être appelées depuis le HTML
 window.openCV = openCV;
 window.closeCV = closeCV;
 window.showMainSkills = showMainSkills;
 
-console.log('🎨 Portfolio HUNT ARNAUD chargé avec succès ! 🚀');
+console.log('Portfolio HUNT ARNAUD chargé avec succès !');
