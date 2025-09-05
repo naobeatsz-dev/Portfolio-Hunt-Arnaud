@@ -28,9 +28,17 @@
 </head>
 <body>
 
-    <!-- Animation d'introduction -->
+    <!-- Animation d'introduction BIENVENUE -->
     <div id="intro-animation">
-        <span>B</span><span>I</span><span>E</span><span>N</span><span>V</span><span>E</span><span>N</span><span>U</span><span>E</span>
+        <span style="--n:1">B</span>
+        <span style="--n:2">I</span>
+        <span style="--n:3">E</span>
+        <span style="--n:4">N</span>
+        <span style="--n:5">V</span>
+        <span style="--n:6">E</span>
+        <span style="--n:7">N</span>
+        <span style="--n:8">U</span>
+        <span style="--n:9">E</span>
     </div>
     
     <!-- Contenu principal caché initialement -->
@@ -72,10 +80,10 @@
                 <div class="about-content">
                     <div class="about-text">
                         <p class="about-description">
-                            Bienvenue sur mon portfolio, un espace où je partage mes créations visuelles et mes projets innovants.
+                            Bienvenue sur mon portfolio, un espace où je partage mes créations visuelles et mes projets.
                         </p>
                         <p class="about-description">
-                            Je suis HUNT ARNAUD, étudiant en 2ème année de BUT MMI, passionné par le design et le développement.
+                            Je suis HUNT ARNAUD, étudiant en 2ème année de BUT MMI, passionné par le design le montage et la création.
                         </p>
                         
                         <div class="about-actions">
@@ -89,7 +97,7 @@
                     </div>
                     
                     <div class="about-image">
-                        <div class="image-placeholder"></div>
+                        <img src="Image/WhatsApp Image 2025-09-05 à 07.00.12_71e3b2d0.jpg" alt="Photo de profil HUNT ARNAUD" class="profile-image">
                     </div>
                 </div>
             </div>
@@ -135,7 +143,7 @@
                         </div>
                         <h3 class="ue-title-new">Concevoir</h3>
                     </div>
-                    <p class="ue-description-new">Concevoir une réponse stratégique pertinente et créative</p>
+                    <p class="ue-description-new">Concevoir de façon créative</p>
                     <div class="ue-skills-new">
                         <span>Stratégie digitale</span>
                         <span>Design thinking</span>
@@ -159,7 +167,7 @@
                         </div>
                         <h3 class="ue-title-new">Exprimer</h3>
                     </div>
-                    <p class="ue-description-new">Exprimer un message avec les médias numériques</p>
+                    <p class="ue-description-new">Exprimer un message</p>
                     <div class="ue-skills-new">
                         <span>Design graphique</span>
                         <span>Communication</span>
@@ -461,7 +469,7 @@
                 </div>
                 <div class="project-info">
                     <h4>Vlog "A Day in My Life"</h4>
-                    <p>Vlog personnel en anglais montrant une journée type d'un alternant. Approche authentique et personnelle pour capturer l'essence de ce format, en mettant en avant ce qui me plaît dans ce genre de contenu.</p>
+                    <p>Vlog en anglais montrant une journée type de mon quotidien en tant qu'alternant. J'ai adopté une approche authentique et personnelle pour capturer l'essence de ce format, en mettant en avant ce que j'apprécie dans ce genre de contenu.</p>
                     <div class="project-tags">
                         <span>Vlog</span>
                         <span>Anglais</span>
@@ -485,7 +493,7 @@
                 </div>
                 <div class="project-info">
                     <h4>Affiche Octobre Rose</h4>
-                    <p>Création d'une affiche de sensibilisation pour le cancer du sein dans le cadre d'Octobre Rose. Réalisée entièrement sur Photoshop avec l'IA Firefly pour générer la photo de la femme. Focus sur un message fort et impactant.</p>
+                    <p>Création d'une affiche de sensibilisation pour le cancer du sein dans le cadre d'Octobre Rose. J'ai réalisé entièrement sur Photoshop avec l'IA Firefly pour générer la photo de la femme. Focus sur un message fort et impactant.</p>
                     <div class="project-tags">
                         <span>Photoshop</span>
                         <span>IA Firefly</span>
@@ -595,7 +603,7 @@
                 </div>
                 <div class="project-info">
                     <h4>Micro-trottoir CPME - Égalité Homme-Femme</h4>
-                    <p>Gestion complète d'un projet de micro-trottoir en collaboration avec la CPME sur l'égalité homme-femme au travail. Pilotage du projet de A à Z : conception de l'idée, formation de l'équipe, élaboration des questions, planification du tournage et coordination avec les collègues.</p>
+                    <p>Gestion complète d'un projet de micro-trottoir en collaboration avec la CPME sur l'égalité homme-femme au travail. J'ai piloté le projet de A à Z : conception de l'idée, formation de l'équipe, élaboration des questions, planification du tournage et coordination avec les collègues.</p>
                     <div class="project-tags">
                         <span>Chef de projet</span>
                         <span>CPME</span>
@@ -705,8 +713,8 @@
 
     </div>
 
-    <!-- Modal CV Stylée -->
-    <div id="cv-modal" class="cv-modal hidden">
+    <!-- Modal CV Stylée - MODIFIÉE POUR EMPÊCHER L'OUVERTURE AUTOMATIQUE -->
+    <div id="cv-modal" class="cv-modal hidden cv-force-hidden">
         <div class="cv-modal-overlay" onclick="closeCV()"></div>
         <div class="cv-modal-content">
             <div class="cv-modal-header">
@@ -716,11 +724,21 @@
                 </button>
             </div>
             <div class="cv-modal-body">
-                <div class="cv-loading">
+                <div class="cv-preview" id="cv-preview">
+                    <div class="cv-preview-content">
+                        <i class="fas fa-file-pdf cv-preview-icon"></i>
+                        <h4>CV de Hunt Arnaud</h4>
+                        <p>Cliquez sur le bouton ci-dessous pour charger le CV</p>
+                        <button id="load-cv-btn" class="load-cv-btn glass-btn" onclick="loadCV()">
+                            <i class="fas fa-eye"></i> Charger le CV
+                        </button>
+                    </div>
+                </div>
+                <div class="cv-loading" id="cv-loading" style="display: none;">
                     <i class="fas fa-spinner fa-spin"></i>
                     <p>Chargement du CV...</p>
                 </div>
-                <iframe id="cv-iframe" src="" frameborder="0"></iframe>
+                <iframe id="cv-iframe" src="" frameborder="0" style="display: none;"></iframe>
             </div>
             <div class="cv-modal-footer">
                 <a href="Image/CV/cv Arnaud Hunt numérique.pdf" class="cv-download-btn glass-btn" download target="_blank">

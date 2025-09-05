@@ -223,61 +223,197 @@ window.addEventListener('popstate', function(event) {
 });
 
 // ===============================
-// GESTION DE LA MODAL CV
+// GESTION DE LA MODAL CV - COMPLÈTEMENT CORRIGÉE
 // ===============================
 
 function initializeCVModal() {
     const modal = document.getElementById('cv-modal');
+    const iframe = document.getElementById('cv-iframe');
+    const preview = document.getElementById('cv-preview');
+    const loading = document.getElementById('cv-loading');
+    
     if (modal) {
-        modal.classList.add('hidden');
+        // FORCE LA FERMETURE COMPLÈTE AVEC TOUS LES STYLES POSSIBLES
+        modal.classList.add('hidden', 'cv-force-hidden');
         modal.style.display = 'none';
         modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modal.style.pointerEvents = 'none';
+        modal.style.zIndex = '-1';
     }
-    console.log('Modal CV initialisée - fermée par défaut');
+    
+    // S'assurer que l'iframe est complètement vide au départ
+    if (iframe) {
+        iframe.src = '';
+        iframe.style.display = 'none';
+        iframe.style.visibility = 'hidden';
+        iframe.classList.remove('loaded');
+    }
+    
+    // S'assurer que le loading est caché
+    if (loading) {
+        loading.style.display = 'none';
+        loading.style.visibility = 'hidden';
+    }
+    
+    // S'assurer que le preview est visible mais pas automatique
+    if (preview) {
+        preview.style.display = 'flex';
+        preview.style.visibility = 'visible';
+    }
+    
+    console.log('Modal CV FORCÉMENT fermée au démarrage');
 }
 
 function openCV() {
     const modal = document.getElementById('cv-modal');
     const iframe = document.getElementById('cv-iframe');
-    const loading = modal.querySelector('.cv-loading');
+    const preview = document.getElementById('cv-preview');
+    const loading = document.getElementById('cv-loading');
+    
     if (!modal) {
         console.error('Modal CV non trouvée');
         return;
     }
-    modal.classList.remove('hidden');
+    
+    console.log('Ouverture manuelle de la modal CV');
+    
+    // Ouvrir la modal SEULEMENT quand on clique sur le bouton
+    modal.classList.remove('hidden', 'cv-force-hidden');
     modal.style.display = 'flex';
+    modal.style.visibility = 'visible';
+    modal.style.pointerEvents = 'auto';
+    modal.style.zIndex = '2000';
     document.body.style.overflow = 'hidden';
+    
     setTimeout(() => {
         modal.style.opacity = '1';
     }, 10);
+    
+    // Réinitialiser complètement l'état de la modal
     if (iframe) {
-        if (loading) loading.style.display = 'block';
+        iframe.src = '';
+        iframe.style.display = 'none';
+        iframe.style.visibility = 'hidden';
+        iframe.classList.remove('loaded');
+    }
+    
+    if (loading) {
+        loading.style.display = 'none';
+        loading.style.visibility = 'hidden';
+    }
+    
+    if (preview) {
+        preview.style.display = 'flex';
+        preview.style.visibility = 'visible';
+    }
+    
+    console.log('Modal CV ouverte - en attente de chargement manuel');
+}
+
+// FONCTION POUR CHARGER LE CV UNIQUEMENT SUR CLIC EXPLICITE
+function loadCV() {
+    const iframe = document.getElementById('cv-iframe');
+    const loading = document.getElementById('cv-loading');
+    const preview = document.getElementById('cv-preview');
+    
+    console.log('Chargement MANUEL du CV demandé');
+    
+    // Cacher le bouton de chargement
+    if (preview) {
+        preview.style.display = 'none';
+        preview.style.visibility = 'hidden';
+    }
+    
+    // Afficher le loading
+    if (loading) {
+        loading.style.display = 'block';
+        loading.style.visibility = 'visible';
+    }
+    
+    // Charger le PDF dans l'iframe SEULEMENT maintenant
+    if (iframe) {
         iframe.src = 'Image/CV/cv Arnaud Hunt numérique.pdf';
         iframe.onload = function() {
-            if (loading) loading.style.display = 'none';
+            if (loading) {
+                loading.style.display = 'none';
+                loading.style.visibility = 'hidden';
+            }
+            iframe.style.display = 'block';
+            iframe.style.visibility = 'visible';
             iframe.classList.add('loaded');
+            console.log('CV chargé avec succès');
+        };
+        
+        iframe.onerror = function() {
+            if (loading) {
+                loading.style.display = 'none';
+                loading.style.visibility = 'hidden';
+            }
+            if (preview) {
+                preview.innerHTML = '<p style="color: white; text-align: center;">Erreur lors du chargement du CV</p>';
+                preview.style.display = 'flex';
+                preview.style.visibility = 'visible';
+            }
+            console.error('Erreur lors du chargement du CV');
         };
     }
-    console.log('CV ouvert');
 }
 
 function closeCV() {
     const modal = document.getElementById('cv-modal');
     const iframe = document.getElementById('cv-iframe');
+    const preview = document.getElementById('cv-preview');
+    const loading = document.getElementById('cv-loading');
+    
     if (!modal) return;
+    
+    console.log('Fermeture de la modal CV');
+    
     modal.style.opacity = '0';
     setTimeout(() => {
+        // FERMETURE COMPLÈTE ET DÉFINITIVE
         modal.style.display = 'none';
-        modal.classList.add('hidden');
+        modal.style.visibility = 'hidden';
+        modal.style.pointerEvents = 'none';
+        modal.style.zIndex = '-1';
+        modal.classList.add('hidden', 'cv-force-hidden');
         document.body.style.overflow = 'auto';
+        
+        // Réinitialiser COMPLÈTEMENT tous les éléments
         if (iframe) {
             iframe.src = '';
+            iframe.style.display = 'none';
+            iframe.style.visibility = 'hidden';
             iframe.classList.remove('loaded');
         }
-        console.log('CV fermé');
+        
+        if (loading) {
+            loading.style.display = 'none';
+            loading.style.visibility = 'hidden';
+        }
+        
+        if (preview) {
+            preview.style.display = 'flex';
+            preview.style.visibility = 'visible';
+            // Remettre le contenu original du preview
+            preview.innerHTML = `
+                <div class="cv-preview-content">
+                    <i class="fas fa-file-pdf cv-preview-icon"></i>
+                    <h4>CV de Hunt Arnaud</h4>
+                    <p>Cliquez sur le bouton ci-dessous pour charger le CV</p>
+                    <button id="load-cv-btn" class="load-cv-btn glass-btn" onclick="loadCV()">
+                        <i class="fas fa-eye"></i> Charger le CV
+                    </button>
+                </div>
+            `;
+        }
+        
+        console.log('CV modal fermée et complètement réinitialisée');
     }, 300);
 }
 
+// Fermeture avec la touche Échap
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const modal = document.getElementById('cv-modal');
@@ -285,6 +421,21 @@ document.addEventListener('keydown', function(e) {
             closeCV();
         }
     }
+});
+
+// EMPÊCHER TOUT CHARGEMENT AUTOMATIQUE AU DÉMARRAGE
+document.addEventListener('DOMContentLoaded', function() {
+    // S'assurer qu'aucune modal ne s'ouvre automatiquement
+    const modal = document.getElementById('cv-modal');
+    if (modal) {
+        modal.classList.add('hidden', 'cv-force-hidden');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modal.style.pointerEvents = 'none';
+        modal.style.zIndex = '-1';
+    }
+    console.log('Vérification : aucune modal ne doit s\'ouvrir automatiquement');
 });
 
 // ===============================
@@ -349,9 +500,10 @@ function initializeContactForm() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(form);
-        const nom = formData.get('nom') || document.getElementById('user_name')?.value;
-        const email = formData.get('email') || document.getElementById('user_email')?.value;
-        const message = formData.get('message') || document.getElementById('user_message')?.value;
+        const nom = formData.get('name') || formData.get('nom');
+        const email = formData.get('email');
+        const message = formData.get('message');
+        
         if (!nom || !email || !message) {
             showNotification('Veuillez remplir tous les champs', 'error');
             return;
@@ -510,6 +662,39 @@ window.addEventListener('resize', handleMobileNavigation);
 
 window.openCV = openCV;
 window.closeCV = closeCV;
+window.loadCV = loadCV;
 window.showMainSkills = showMainSkills;
 
-console.log('Portfolio HUNT ARNAUD chargé avec succès !');
+console.log('Portfolio HUNT ARNAUD chargé avec succès - CV NE S\'OUVRE PAS automatiquement !');
+function openCV() {
+    const modal = document.getElementById('cv-modal');
+    const iframe = document.getElementById('cv-iframe');
+    const loading = modal.querySelector('.cv-loading');
+    if (!modal) return;
+    modal.classList.remove('hidden', 'cv-force-hidden');
+    modal.style.opacity = '1';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if (iframe) {
+        if (loading) loading.style.display = 'block';
+        iframe.src = 'Image/CV/cv Arnaud Hunt numérique.pdf';
+        iframe.onload = function() {
+            if (loading) loading.style.display = 'none';
+            iframe.classList.add('loaded');
+        };
+    }
+}
+
+function closeCV() {
+    const modal = document.getElementById('cv-modal');
+    const iframe = document.getElementById('cv-iframe');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.style.opacity = '0';
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    if (iframe) {
+        iframe.src = '';
+        iframe.classList.remove('loaded');
+    }
+}

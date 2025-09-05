@@ -1,5 +1,96 @@
-/* CORRECTIONS CRITIQUES POUR LA SECTION UE */
+/* CORRECTIONS CRITIQUES POUR EMPÊCHER L'OUVERTURE AUTOMATIQUE DU CV */
 
+/* MODAL CV - PROTECTION MAXIMALE CONTRE L'OUVERTURE AUTOMATIQUE */
+#cv-modal {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+#cv-modal.hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+#cv-modal.cv-force-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+/* Style pour le contenu de preview du CV */
+.cv-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: white;
+}
+
+.cv-preview-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px;
+}
+
+.cv-preview-icon {
+    font-size: 4rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+}
+
+.cv-preview-content h4 {
+    font-size: 1.5rem;
+    color: white;
+    margin: 0;
+    font-family: var(--font-main);
+}
+
+.cv-preview-content p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.8);
+    margin: 0;
+    max-width: 300px;
+    line-height: 1.5;
+}
+
+.load-cv-btn {
+    background: var(--color-glass-btn);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-white);
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--font-main);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.load-cv-btn:hover {
+    background: var(--color-glass-btn-hover);
+    border-color: var(--color-border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* VARIABLES CSS */
 :root {
     --color-white: #fff;
     --color-black: #000;
@@ -18,311 +109,9 @@
     --font-main: 'Montserrat', sans-serif;
     --font-title: 'Audiowide', sans-serif;
     --timeline-left: 50%;
-    --line-height: 100%; /* CORRIGÉ : était à 0% ce qui cachait la timeline */
+    --line-height: 100%;
 }
 
-/* SECTION UE - TIMELINE HORIZONTALE CORRIGÉE */
-.ue-description {
-    text-align: center;
-    font-size: 1.2rem;
-    color: var(--color-white);
-    margin-bottom: 50px;
-    max-width: 800px;
-    line-height: 1.6;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.ue-timeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    max-width: 1000px;
-    width: 100%;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.ue-timeline::before {
-    content: '';
-    position: absolute;
-    left: var(--timeline-left);
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, 
-        transparent 0%, 
-        rgba(255,255,255,0.3) 20%, 
-        rgba(255,255,255,0.3) 80%, 
-        transparent 100%);
-    transform: translateX(-50%);
-    height: 100%; /* CORRIGÉ : remplace var(--line-height) par 100% fixe */
-    transition: height 1s ease;
-    /* AJOUT : Force l'affichage de la ligne */
-    display: block !important;
-    visibility: visible !important;
-}
-
-.ue-item {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    opacity: 1; /* CORRIGÉ : était à 0, maintenant visible par défaut */
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    pointer-events: auto !important; /* CRITIQUE : rend les éléments cliquables */
-}
-
-.ue-item:nth-child(odd) {
-    flex-direction: row;
-}
-
-.ue-item:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.ue-card-new {
-    background: var(--color-glass-btn);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 30px;
-    width: 45%;
-    min-height: 200px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    overflow: hidden;
-    will-change: transform;
-    /* AJOUT : Force l'affichage et la cliquabilité */
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important; /* CRITIQUE : rend les cartes cliquables */
-    z-index: 10; /* AJOUT : s'assure que les cartes sont au-dessus */
-}
-
-.ue-card-new::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    transition: left 0.6s;
-    pointer-events: none; /* IMPORTANT : empêche ce pseudo-élément de bloquer les clics */
-}
-
-.ue-card-new:hover::before {
-    left: 100%;
-}
-
-.ue-card-new:hover {
-    transform: translateY(-12px) scale(1.03);
-    background: var(--color-glass-btn-hover);
-    border-color: rgba(255,255,255,0.25);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-}
-
-.ue-connector {
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    pointer-events: none; /* Les connecteurs ne doivent pas être cliquables */
-}
-
-.ue-dot {
-    width: 20px;
-    height: 20px;
-    background: var(--color-glass-btn);
-    border: 3px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s;
-    position: relative;
-    /* AJOUT : Force l'affichage */
-    display: block !important;
-    visibility: visible !important;
-    pointer-events: none; /* Les dots ne doivent pas être cliquables */
-}
-
-.ue-item:hover .ue-dot {
-    background: rgba(255,255,255,0.2);
-    border-color: rgba(255,255,255,0.5);
-    transform: scale(1.3);
-    box-shadow: 0 0 25px rgba(255,255,255,0.4);
-}
-
-.ue-header-new {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-icon-new {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: var(--color-white);
-    flex-shrink: 0;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-title-new {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--color-white);
-    margin: 0;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-description-new {
-    color: rgba(255,255,255,0.8);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-skills-new {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 20px;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-skills-new span {
-    background: rgba(255,255,255,0.1);
-    color: var(--color-white);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    font-weight: 500;
-    transition: all 0.3s;
-    /* AJOUT : Force l'affichage */
-    display: inline-block !important;
-    visibility: visible !important;
-}
-
-.ue-btn-new {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--color-white);
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    /* AJOUT : Force l'affichage et la cliquabilité */
-    display: inline-block !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    z-index: 20; /* Plus élevé que les cartes pour être cliquable */
-}
-
-.ue-btn-new:hover {
-    background: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-}
-
-/* CORRECTION RESPONSIVE POUR ÉVITER LES CONFLITS */
-@media screen and (max-width: 1023px) {
-    :root {
-        --timeline-left: 30px;
-    }
-    
-    .ue-item {
-        flex-direction: row !important;
-        padding-left: 80px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        width: 100%;
-        min-height: 180px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-connector {
-        position: absolute;
-        left: 0;
-        width: 60px;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    :root {
-        --timeline-left: 20px;
-    }
-    
-    .ue-item {
-        padding-left: 60px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        min-height: 160px;
-        padding: 25px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-}
-
-@media screen and (max-width: 599px) {
-    .ue-item {
-        padding-left: 50px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        min-height: 140px;
-        padding: 20px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-}
-
-/* CORRECTION POUR ÉVITER LES CONFLITS AVEC D'AUTRES ANIMATIONS */
-@media (prefers-reduced-motion: reduce) {
-    .ue-timeline::before {
-        transition: none;
-    }
-    
-    .ue-item {
-        transition: none;
-        opacity: 1 !important; /* Force l'affichage même en mode réduit */
-    }
-}
 /* RESET ET OPTIMISATIONS */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 * {
@@ -339,7 +128,7 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* INTRO ANIMATION */
+/* INTRO ANIMATION BIENVENUE */
 #intro-animation {
     display: flex;
     justify-content: center;
@@ -353,6 +142,7 @@ html {
     background: var(--color-black);
     z-index: 1000;
 }
+
 #intro-animation span {
     opacity: 0;
     transform: translateY(50px);
@@ -360,9 +150,26 @@ html {
     color: var(--color-white) !important;
     text-shadow: var(--color-shadow);
 }
-@keyframes appear { to { opacity: 1; transform: translateY(0); } }
-#intro-animation span:nth-child(n) { animation-delay: calc(0.1s * var(--n)); }
+
+@keyframes appear { 
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    } 
+}
+
+#intro-animation span:nth-child(1) { animation-delay: 0.1s; }
+#intro-animation span:nth-child(2) { animation-delay: 0.2s; }
+#intro-animation span:nth-child(3) { animation-delay: 0.3s; }
+#intro-animation span:nth-child(4) { animation-delay: 0.4s; }
+#intro-animation span:nth-child(5) { animation-delay: 0.5s; }
+#intro-animation span:nth-child(6) { animation-delay: 0.6s; }
+#intro-animation span:nth-child(7) { animation-delay: 0.7s; }
+#intro-animation span:nth-child(8) { animation-delay: 0.8s; }
+#intro-animation span:nth-child(9) { animation-delay: 0.9s; }
+
 .hidden { display: none; }
+
 #intro-animation.fade-out {
     opacity: 0;
     transition: opacity 1s;
@@ -569,24 +376,23 @@ nav {
 }
 .about-actions { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px; }
 .about-image { display: flex; justify-content: center; }
-.image-placeholder {
-    width: 100%; height: 350px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.15);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--color-white);
-    font-size: 1rem;
-    letter-spacing: 1px;
-    font-family: var(--font-main);
-    text-transform: uppercase;
-    position: relative;
-    overflow: hidden;
-}
-.image-placeholder::before { content: 'PHOTO PROFIL'; }
 
-/* NOUVEAU DESIGN UE - TIMELINE HORIZONTALE */
+/* PHOTO DE PROFIL CORRIGÉE */
+.about-image {
+    width: 500px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* SECTION UE - TIMELINE HORIZONTALE CORRIGÉE */
 .ue-description {
     text-align: center;
     font-size: 1.2rem;
@@ -595,6 +401,9 @@ nav {
     max-width: 800px;
     line-height: 1.6;
     text-shadow: var(--color-shadow);
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .ue-timeline {
@@ -604,6 +413,8 @@ nav {
     gap: 40px;
     max-width: 1000px;
     width: 100%;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .ue-timeline::before {
@@ -619,8 +430,10 @@ nav {
         rgba(255,255,255,0.3) 80%, 
         transparent 100%);
     transform: translateX(-50%);
-    height: var(--line-height, 100%);
+    height: 100%;
     transition: height 1s ease;
+    display: block !important;
+    visibility: visible !important;
 }
 
 .ue-item {
@@ -628,8 +441,10 @@ nav {
     align-items: center;
     position: relative;
     width: 100%;
-    opacity: 0;
+    opacity: 1;
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 
 .ue-item:nth-child(odd) {
@@ -653,6 +468,11 @@ nav {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow: hidden;
     will-change: transform;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    z-index: 10;
 }
 
 .ue-card-new::before {
@@ -664,6 +484,7 @@ nav {
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
     transition: left 0.6s;
+    pointer-events: none;
 }
 
 .ue-card-new:hover::before {
@@ -684,6 +505,8 @@ nav {
     align-items: center;
     position: relative;
     z-index: 2;
+    visibility: visible !important;
+    pointer-events: none;
 }
 
 .ue-dot {
@@ -695,6 +518,9 @@ nav {
     backdrop-filter: blur(10px);
     transition: all 0.3s;
     position: relative;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: none;
 }
 
 .ue-item:hover .ue-dot {
@@ -709,6 +535,7 @@ nav {
     align-items: center;
     gap: 15px;
     margin-bottom: 15px;
+    visibility: visible !important;
 }
 
 .ue-icon-new {
@@ -722,6 +549,7 @@ nav {
     font-size: 1.5rem;
     color: var(--color-white);
     flex-shrink: 0;
+    visibility: visible !important;
 }
 
 .ue-title-new {
@@ -730,6 +558,7 @@ nav {
     color: var(--color-white);
     margin: 0;
     text-shadow: var(--color-shadow);
+    visibility: visible !important;
 }
 
 .ue-description-new {
@@ -738,6 +567,7 @@ nav {
     line-height: 1.5;
     margin-bottom: 15px;
     text-shadow: var(--color-shadow);
+    visibility: visible !important;
 }
 
 .ue-skills-new {
@@ -745,6 +575,7 @@ nav {
     flex-wrap: wrap;
     gap: 6px;
     margin-bottom: 20px;
+    visibility: visible !important;
 }
 
 .ue-skills-new span {
@@ -756,6 +587,8 @@ nav {
     border: 1px solid rgba(255,255,255,0.2);
     font-weight: 500;
     transition: all 0.3s;
+    display: inline-block !important;
+    visibility: visible !important;
 }
 
 .ue-btn-new {
@@ -770,6 +603,10 @@ nav {
     transition: all 0.3s;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: inline-block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 20;
 }
 
 .ue-btn-new:hover {
@@ -861,41 +698,6 @@ nav {
     margin-bottom: 40px;
 }
 
-.contact-direct {
-    margin-top: 40px;
-    text-align: center;
-}
-.contact-direct h3 {
-    font-size: 1.4rem;
-    color: var(--color-white);
-    margin-bottom: 25px;
-    text-shadow: var(--color-shadow);
-    font-family: var(--font-main);
-    font-weight: 600;
-}
-.contact-methods {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-.contact-method {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px 20px;
-    font-size: 0.95rem;
-    text-decoration: none;
-    color: var(--color-white);
-    border-radius: 12px;
-    transition: all 0.3s;
-}
-.contact-method i {
-    font-size: 1.1rem;
-}
-
 .input-container { position: relative; margin-bottom: 20px; }
 .input-container i {
     position: absolute;
@@ -962,7 +764,7 @@ nav {
     color: #ff6b6b;
 }
 
-/* MODAL CV */
+/* MODAL CV - VERSION FINALE */
 .cv-modal {
     position: fixed;
     top: 0; left: 0;
@@ -1328,77 +1130,22 @@ nav {
     text-shadow: var(--color-shadow);
 }
 
-/* ANIMATIONS */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-/* ===================================== */
 /* RESPONSIVE DESIGN COMPLET */
-/* ===================================== */
-
-/* Large screens (1400px+) */
-@media screen and (min-width: 1400px) {
-    .glass-container {
-        max-width: 1300px;
-        padding: 60px 50px;
-    }
-    
-    .ue-card-new {
-        width: 42%;
-        min-height: 220px;
-    }
-    
-    .projects-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Desktop (1024px - 1399px) */
-@media screen and (max-width: 1399px) {
-    .glass-container {
-        margin: 0 30px;
-        padding: 50px 35px;
-    }
-    
-    .ue-card-new {
-        width: 44%;
-    }
-    
-    .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Tablet landscape (768px - 1023px) */
 @media screen and (max-width: 1023px) {
-    .glass-container {
-        margin: 0 20px;
-        padding: 40px 30px;
-    }
-    
-    /* Passage en layout vertical pour tablettes */
     :root {
         --timeline-left: 30px;
-    }
-    
-    .ue-timeline {
-        gap: 30px;
     }
     
     .ue-item {
         flex-direction: row !important;
         padding-left: 80px;
+        opacity: 1 !important;
     }
     
     .ue-card-new {
         width: 100%;
         min-height: 180px;
+        opacity: 1 !important;
     }
     
     .ue-connector {
@@ -1406,734 +1153,92 @@ nav {
         left: 0;
         width: 60px;
     }
-    
-    .ue-dot {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .section h2 {
-        font-size: 2.2rem;
-    }
-    
-    /* Navigation adaptée */
-    .nav-links {
-        width: 250px;
-        padding: 15px;
-    }
-    
-    /* Projets en 2 colonnes */
-    .projects-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-    
-    /* Contact adaptable */
-    .contact-methods {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
 }
 
-/* Tablet portrait (600px - 767px) */
 @media screen and (max-width: 767px) {
-    .glass-container {
-        margin: 0 15px;
-        padding: 30px 20px;
-        border-radius: 16px;
+    :root {
+        --timeline-left: 20px;
     }
     
-    .section {
-        padding: 50px 0 30px 0;
-    }
-    
-    .section h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-    }
-    
-    /* Header responsive */
-    header h1 {
-        font-size: clamp(2.5rem, 10vw, 6rem);
-    }
-    
-    .hunt-arnaud {
-        font-size: clamp(1rem, 3.5vw, 1.5rem);
-        margin-bottom: 5px;
-    }
-    
-    .graphic-designer {
-        font-size: clamp(0.8rem, 2.5vw, 1.2rem);
-        margin-bottom: 25px;
-    }
-    
-    /* About en une colonne */
     .about-content {
         grid-template-columns: 1fr;
         gap: 30px;
         text-align: center;
     }
     
-    .about-actions {
-        justify-content: center;
-        gap: 15px;
-    }
-    
-    /* UE en layout vertical simplifié */
-    :root {
-        --timeline-left: 20px;
+    .about-image {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+        margin: 0 auto;
     }
     
     .ue-item {
         padding-left: 60px;
+        opacity: 1 !important;
     }
     
     .ue-card-new {
         min-height: 160px;
         padding: 25px;
+        opacity: 1 !important;
     }
     
-    .ue-header-new {
-        gap: 12px;
-    }
-    
-    .ue-icon-new {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-    }
-    
-    .ue-title-new {
-        font-size: 1.2rem;
-    }
-    
-    /* Projets en une colonne */
     .projects-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
     
-    .project-card {
-        min-height: 350px;
-    }
-    
-    .project-image {
-        height: 150px;
-    }
-    
-    /* Contact */
-    .contact-container {
-        max-width: 100%;
-    }
-    
-    .contact-methods {
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .contact-method {
-        font-size: 0.9rem;
-        padding: 12px 15px;
-    }
-    
-    /* Footer responsive */
     .footer-container {
         flex-direction: column;
         gap: 15px;
         text-align: center;
     }
-    
-    /* CV Modal */
-    .cv-modal-content {
-        width: 95%;
-        height: 85%;
-    }
-    
-    .cv-modal-header,
-    .cv-modal-footer {
-        padding: 15px 20px;
-    }
 }
 
-/* Mobile (480px - 599px) */
 @media screen and (max-width: 599px) {
-    .glass-container {
-        margin: 0 10px;
-        padding: 25px 15px;
-        border-radius: 12px;
-    }
-    
-    .section {
-        padding: 40px 0 25px 0;
-    }
-    
-    .section h2 {
-        font-size: 1.8rem;
-    }
-    
-    /* Animation intro responsive */
-    #intro-animation {
-        font-size: 3rem;
-        letter-spacing: 3px;
-    }
-    
-    /* Header mobile */
-    header h1 {
-        font-size: clamp(2rem, 8vw, 4rem);
-    }
-    
-    .btn-discover {
-        padding: 10px 20px;
-        font-size: 0.85rem;
-    }
-    
-    /* Navigation mobile */
-    .nav-links {
-        width: calc(100vw - 40px);
-        left: -100vw;
-        padding: 15px;
-        backdrop-filter: blur(12px);
-    }
-    
-    /* UE mobile */
-    :root {
-        --timeline-left: 20px;
-    }
-    
     .ue-item {
         padding-left: 50px;
-    }
-    
-    .ue-connector {
-        width: 40px;
+        opacity: 1 !important;
     }
     
     .ue-card-new {
         min-height: 140px;
         padding: 20px;
+        opacity: 1 !important;
     }
     
-    .ue-header-new {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .ue-icon-new {
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
-    }
-    
-    .ue-title-new {
-        font-size: 1.1rem;
-    }
-    
-    .ue-description-new {
-        font-size: 0.85rem;
-    }
-    
-    .ue-skills-new span {
-        font-size: 0.65rem;
-        padding: 3px 6px;
-    }
-    
-    /* Projets mobile */
-    .project-card {
-        min-height: 320px;
-    }
-    
-    .project-image {
-        height: 120px;
-    }
-    
-    .project-info {
-        padding: 15px;
-    }
-    
-    .project-info h4 {
-        font-size: 1.1rem;
-    }
-    
-    .project-info p {
-        font-size: 0.85rem;
-    }
-    
-    .project-links {
-        flex-direction: column;
-    }
-    
-    .project-btn {
+    .about-image {
         width: 100%;
-        justify-content: center;
-    }
-    
-    /* Contact mobile */
-    .glass-form {
-        padding: 20px 15px;
-    }
-    
-    .input-container input,
-    .input-container textarea {
-        padding: 12px 35px;
-        font-size: 0.9rem;
-    }
-    
-    .submit-btn {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    /* Scroll to top mobile */
-    .scroll-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
-    }
-    
-    /* CV Modal mobile */
-    .cv-modal-content {
-        width: 98%;
-        height: 90%;
-    }
-    
-    .cv-modal-header {
-        padding: 12px 15px;
-    }
-    
-    .cv-modal-header h3 {
-        font-size: 1.1rem;
-    }
-    
-    .cv-close-btn {
-        width: 35px;
-        height: 35px;
+        max-width: 350px;
+        height: 250px;
     }
 }
-
-/* Très petit mobile (max 400px) */
-@media screen and (max-width: 400px) {
-    .glass-container {
-        margin: 0 5px;
-        padding: 20px 12px;
-    }
-    
-    #intro-animation {
-        font-size: 2.5rem;
-        letter-spacing: 2px;
-    }
-    
-    .ue-card-new {
-        padding: 15px;
-        min-height: 130px;
-    }
-    
-    .ue-title-new {
-        font-size: 1rem;
-    }
-    
-    .project-card {
-        min-height: 300px;
-    }
-    
-    .contact-method {
-        font-size: 0.8rem;
-        padding: 10px 12px;
-    }
-}
-
-/* Landscape mobile */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-    .section {
-        padding: 30px 0 20px 0;
-    }
-    
-    header {
-        height: 80vh;
-    }
-    
-    .ue-card-new {
-        min-height: 120px;
-        padding: 15px;
-    }
-    
-    .cv-modal-content {
-        height: 95%;
-    }
-}
-
-/* Support pour les écrans tactiles */
-@media (hover: none) and (pointer: coarse) {
-    .ue-card-new:hover,
-    .project-card:hover,
-    .glass-btn:hover {
-        transform: none;
-    }
-    
-    .ue-card-new:active {
-        transform: scale(0.98);
-    }
-}
-
-/* Mode sombre préféré */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-glass: rgba(255,255,255,0.05);
-        --color-glass-btn: rgba(255,255,255,0.08);
-    }
-}
-
-/* Réduction de mouvement */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-    
-    .ue-timeline::before {
-        transition: none;
-    }
-    
-    .ue-item {
-        transition: none;
-    }
-}
-
-/* Support pour les écrans haute densité */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .project-img {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: optimize-contrast;
-    }
-}
-/* CORRECTIONS CRITIQUES POUR LA SECTION UE */
-
-:root {
-    --color-white: #fff;
-    --color-black: #000;
-    --color-glass: rgba(255,255,255,0.08);
-    --color-glass-btn: rgba(255,255,255,0.1);
-    --color-glass-btn-hover: rgba(255,255,255,0.15);
-    --color-border: rgba(255,255,255,0.2);
-    --color-border-hover: rgba(255,255,255,0.3);
-    --color-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-    --color-shadow-strong: 3px 3px 15px rgba(0,0,0,0.9);
-    --color-shadow-footer: 2px 2px 8px rgba(0,0,0,0.8);
-    --radius: 12px;
-    --radius-lg: 20px;
-    --shadow: 0 4px 15px rgba(0,0,0,0.2);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
-    --font-main: 'Montserrat', sans-serif;
-    --font-title: 'Audiowide', sans-serif;
-    --timeline-left: 50%;
-    --line-height: 100%; /* CORRIGÉ : était à 0% ce qui cachait la timeline */
-}
-
-/* SECTION UE - TIMELINE HORIZONTALE CORRIGÉE */
-.ue-description {
-    text-align: center;
-    font-size: 1.2rem;
-    color: var(--color-white);
-    margin-bottom: 50px;
-    max-width: 800px;
-    line-height: 1.6;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.ue-timeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    max-width: 1000px;
-    width: 100%;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.ue-timeline::before {
-    content: '';
-    position: absolute;
-    left: var(--timeline-left);
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, 
-        transparent 0%, 
-        rgba(255,255,255,0.3) 20%, 
-        rgba(255,255,255,0.3) 80%, 
-        transparent 100%);
-    transform: translateX(-50%);
-    height: 100%; /* CORRIGÉ : remplace var(--line-height) par 100% fixe */
-    transition: height 1s ease;
-    /* AJOUT : Force l'affichage de la ligne */
-    display: block !important;
-    visibility: visible !important;
-}
-
-.ue-item {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    opacity: 1; /* CORRIGÉ : était à 0, maintenant visible par défaut */
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    pointer-events: auto !important; /* CRITIQUE : rend les éléments cliquables */
-}
-
-.ue-item:nth-child(odd) {
-    flex-direction: row;
-}
-
-.ue-item:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.ue-card-new {
-    background: var(--color-glass-btn);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 30px;
-    width: 45%;
-    min-height: 200px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    overflow: hidden;
-    will-change: transform;
-    /* AJOUT : Force l'affichage et la cliquabilité */
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important; /* CRITIQUE : rend les cartes cliquables */
-    z-index: 10; /* AJOUT : s'assure que les cartes sont au-dessus */
-}
-
-.ue-card-new::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    transition: left 0.6s;
-    pointer-events: none; /* IMPORTANT : empêche ce pseudo-élément de bloquer les clics */
-}
-
-.ue-card-new:hover::before {
-    left: 100%;
-}
-
-.ue-card-new:hover {
-    transform: translateY(-12px) scale(1.03);
-    background: var(--color-glass-btn-hover);
-    border-color: rgba(255,255,255,0.25);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-}
-
-.ue-connector {
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-    pointer-events: none; /* Les connecteurs ne doivent pas être cliquables */
-}
-
-.ue-dot {
-    width: 20px;
-    height: 20px;
-    background: var(--color-glass-btn);
-    border: 3px solid rgba(255,255,255,0.3);
-    border-radius: 50%;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s;
-    position: relative;
-    /* AJOUT : Force l'affichage */
-    display: block !important;
-    visibility: visible !important;
-    pointer-events: none; /* Les dots ne doivent pas être cliquables */
-}
-
-.ue-item:hover .ue-dot {
-    background: rgba(255,255,255,0.2);
-    border-color: rgba(255,255,255,0.5);
-    transform: scale(1.3);
-    box-shadow: 0 0 25px rgba(255,255,255,0.4);
-}
-
-.ue-header-new {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-icon-new {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-    border-radius: 12px;
-    display: flex;
+/* MODAL CV - VERSION CORRIGÉE */
+#cv-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 2000;
+    display: none;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    color: var(--color-white);
-    flex-shrink: 0;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.ue-title-new {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--color-white);
-    margin: 0;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
+#cv-modal.hidden,
+#cv-modal.cv-force-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
-.ue-description-new {
-    color: rgba(255,255,255,0.8);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 15px;
-    text-shadow: var(--color-shadow);
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-skills-new {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 20px;
-    /* AJOUT : Force l'affichage */
-    visibility: visible !important;
-}
-
-.ue-skills-new span {
-    background: rgba(255,255,255,0.1);
-    color: var(--color-white);
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    font-weight: 500;
-    transition: all 0.3s;
-    /* AJOUT : Force l'affichage */
-    display: inline-block !important;
-    visibility: visible !important;
-}
-
-.ue-btn-new {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--color-white);
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    /* AJOUT : Force l'affichage et la cliquabilité */
-    display: inline-block !important;
+#cv-modal:not(.hidden):not(.cv-force-hidden) {
+    display: flex !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    z-index: 20; /* Plus élevé que les cartes pour être cliquable */
-}
-
-.ue-btn-new:hover {
-    background: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-}
-
-/* CORRECTION RESPONSIVE POUR ÉVITER LES CONFLITS */
-@media screen and (max-width: 1023px) {
-    :root {
-        --timeline-left: 30px;
-    }
-    
-    .ue-item {
-        flex-direction: row !important;
-        padding-left: 80px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        width: 100%;
-        min-height: 180px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-connector {
-        position: absolute;
-        left: 0;
-        width: 60px;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    :root {
-        --timeline-left: 20px;
-    }
-    
-    .ue-item {
-        padding-left: 60px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        min-height: 160px;
-        padding: 25px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-}
-
-@media screen and (max-width: 599px) {
-    .ue-item {
-        padding-left: 50px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-    
-    .ue-card-new {
-        min-height: 140px;
-        padding: 20px;
-        opacity: 1 !important; /* Force l'affichage sur mobile */
-    }
-}
-
-/* CORRECTION POUR ÉVITER LES CONFLITS AVEC D'AUTRES ANIMATIONS */
-@media (prefers-reduced-motion: reduce) {
-    .ue-timeline::before {
-        transition: none;
-    }
-    
-    .ue-item {
-        transition: none;
-        opacity: 1 !important; /* Force l'affichage même en mode réduit */
-    }
+    opacity: 1 !important;
+    z-index: 2000 !important;
 }
