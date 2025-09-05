@@ -9,11 +9,8 @@ let currentSection = 'main'; // 'main' ou nom de l'UE active
 // ===============================
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Animation BIENVENUE au chargement
     const introAnimation = document.getElementById('intro-animation');
     const mainContent = document.getElementById('main-content');
-    
-    // Masquer l'animation après 3 secondes et afficher le contenu
     setTimeout(() => {
         introAnimation.classList.add('fade-out');
         setTimeout(() => {
@@ -29,27 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===============================
 
 function initializePortfolio() {
-    // Initialiser la vidéo de fond
     initializeVideo();
-    
-    // Initialiser la navigation
     initializeNavigation();
-    
-    // Initialiser les animations de scroll
     initializeScrollAnimations();
-    
-    // Initialiser les cartes UE
     initializeUECards();
-    
-    // Initialiser le formulaire de contact
     initializeContactForm();
-    
-    // Initialiser le bouton scroll to top
     initializeScrollToTop();
-    
-    // Initialiser la modal CV (sans l'ouvrir)
     initializeCVModal();
-    
     console.log('Portfolio initialisé avec succès');
 }
 
@@ -59,19 +42,13 @@ function initializePortfolio() {
 
 function initializeVideo() {
     const video = document.getElementById('video-bg');
-    
     if (video) {
         video.addEventListener('loadeddata', function() {
             video.classList.add('loaded');
         });
-        
-        // Gérer la pause/lecture selon la visibilité de la page
         document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                video.pause();
-            } else {
-                video.play();
-            }
+            if (document.hidden) video.pause();
+            else video.play();
         });
     }
 }
@@ -84,26 +61,16 @@ function initializeNavigation() {
     const menuToggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
     const navItems = document.querySelectorAll('.nav-links a');
-    
-    // Toggle du menu burger
     if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('open');
         });
     }
-    
-    // Navigation vers les sections principales
     navItems.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
-            
-            // Fermer le menu mobile
-            if (navLinks) {
-                navLinks.classList.remove('open');
-            }
-            
-            // Si on est dans une section UE, revenir d'abord au main
+            if (navLinks) navLinks.classList.remove('open');
             if (currentSection !== 'main') {
                 showMainSkills();
                 setTimeout(() => {
@@ -114,10 +81,8 @@ function initializeNavigation() {
             }
         });
     });
-    
-    // Fermer le menu en cliquant ailleurs
     document.addEventListener('click', function(e) {
-        if (menuToggle && navLinks && 
+        if (menuToggle && navLinks &&
             !menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
             navLinks.classList.remove('open');
         }
@@ -129,23 +94,19 @@ function initializeNavigation() {
 // ===============================
 
 function initializeUECards() {
-    // Sélectionne les cartes de la timeline (nouveau design)
-    const ueCardsNew = document.querySelectorAll('.ue-card-new');
-    ueCardsNew.forEach(card => {
+    // Timeline (nouveau design)
+    document.querySelectorAll('.ue-card-new').forEach(card => {
         const ueBtn = card.querySelector('.ue-btn-new');
         const ueName = card.parentElement.getAttribute('data-ue');
-        // Clic sur la carte entière
         card.addEventListener('click', function() {
             showUEProjects(ueName);
         });
-        // Clic sur le bouton
         if (ueBtn) {
             ueBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 showUEProjects(ueName);
             });
         }
-        // Effet de hover
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-12px) scale(1.02)';
         });
@@ -153,10 +114,8 @@ function initializeUECards() {
             this.style.transform = 'translateY(0) scale(1)';
         });
     });
-
-    // Sélectionne les anciennes cartes (si présentes)
-    const ueCards = document.querySelectorAll('.ue-card');
-    ueCards.forEach(card => {
+    // Anciennes cartes (si présentes)
+    document.querySelectorAll('.ue-card').forEach(card => {
         const ueBtn = card.querySelector('.ue-btn');
         const ueName = card.getAttribute('data-ue');
         card.addEventListener('click', function() {
@@ -184,89 +143,68 @@ function initializeUECards() {
 function showUEProjects(ueName) {
     const skillsSection = document.getElementById('skills');
     const ueSection = document.getElementById(`ue-${ueName}`);
-    
+    const navLinks = document.getElementById('nav-links');
     if (!ueSection) {
         console.error(`Section UE ${ueName} non trouvée`);
         return;
     }
-    
+    // Fermer le menu mobile si ouvert
+    if (navLinks && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+    }
     // Animation de sortie de la section skills
     if (skillsSection) {
         skillsSection.style.opacity = '0';
         skillsSection.style.transform = 'translateX(-100px)';
-        
         setTimeout(() => {
-            // Masquer la section skills
             skillsSection.style.display = 'none';
-            
-            // Afficher la section UE
             ueSection.classList.remove('hidden');
             ueSection.style.display = 'flex';
             ueSection.style.opacity = '0';
             ueSection.style.transform = 'translateX(100px)';
-            
-            // Animation d'entrée
             setTimeout(() => {
                 ueSection.style.opacity = '1';
                 ueSection.style.transform = 'translateX(0)';
-                
-                // Scroll vers le haut de la section
-                ueSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-                
-                // Mettre à jour la section courante
+                // Scroll mobile friendly
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: ueSection.offsetTop - (window.innerWidth < 600 ? 0 : 80),
+                        behavior: 'smooth'
+                    });
+                }, 50);
                 currentSection = ueName;
             }, 50);
         }, 300);
     }
-    
-    // Mettre à jour l'URL sans recharger la page
     history.pushState({section: ueName}, '', `#ue-${ueName}`);
 }
 
 function showMainSkills() {
     const skillsSection = document.getElementById('skills');
     const currentUESection = document.getElementById(`ue-${currentSection}`);
-    
     if (currentSection === 'main') return;
-    
-    // Animation de sortie de la section UE
     if (currentUESection) {
         currentUESection.style.opacity = '0';
         currentUESection.style.transform = 'translateX(100px)';
-        
         setTimeout(() => {
-            // Masquer la section UE
             currentUESection.style.display = 'none';
             currentUESection.classList.add('hidden');
-            
-            // Afficher la section skills
             if (skillsSection) {
                 skillsSection.style.display = 'flex';
                 skillsSection.style.opacity = '0';
                 skillsSection.style.transform = 'translateX(-100px)';
-                
-                // Animation d'entrée
                 setTimeout(() => {
                     skillsSection.style.opacity = '1';
                     skillsSection.style.transform = 'translateX(0)';
-                    
-                    // Scroll vers la section skills
-                    skillsSection.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
+                    skillsSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
                     });
-                    
-                    // Mettre à jour la section courante
                     currentSection = 'main';
                 }, 50);
             }
         }, 300);
     }
-    
-    // Mettre à jour l'URL
     history.pushState({section: 'main'}, '', '#skills');
 }
 
@@ -285,94 +223,61 @@ window.addEventListener('popstate', function(event) {
 });
 
 // ===============================
-// GESTION DE LA MODAL CV (CORRIGÉE)
+// GESTION DE LA MODAL CV
 // ===============================
 
 function initializeCVModal() {
-    // Simplement s'assurer que la modal est fermée au démarrage
     const modal = document.getElementById('cv-modal');
     if (modal) {
         modal.classList.add('hidden');
         modal.style.display = 'none';
         modal.style.opacity = '0';
     }
-    
     console.log('Modal CV initialisée - fermée par défaut');
 }
 
-// Fonction pour ouvrir le CV (appelée uniquement par le bouton)
 function openCV() {
     const modal = document.getElementById('cv-modal');
     const iframe = document.getElementById('cv-iframe');
     const loading = modal.querySelector('.cv-loading');
-    
     if (!modal) {
         console.error('Modal CV non trouvée');
         return;
     }
-    
-    // Afficher la modal
     modal.classList.remove('hidden');
     modal.style.display = 'flex';
-    
-    // Empêcher le scroll du body
     document.body.style.overflow = 'hidden';
-    
-    // Animation d'ouverture
     setTimeout(() => {
         modal.style.opacity = '1';
     }, 10);
-    
-    // Charger le CV seulement maintenant
     if (iframe) {
-        // Afficher le loading
-        if (loading) {
-            loading.style.display = 'block';
-        }
-        
-        // Charger le PDF
+        if (loading) loading.style.display = 'block';
         iframe.src = 'Image/CV/cv Arnaud Hunt numérique.pdf';
-        
-        // Masquer le loading une fois chargé
         iframe.onload = function() {
-            if (loading) {
-                loading.style.display = 'none';
-            }
+            if (loading) loading.style.display = 'none';
             iframe.classList.add('loaded');
         };
     }
-    
     console.log('CV ouvert');
 }
 
-// Fonction pour fermer le CV
 function closeCV() {
     const modal = document.getElementById('cv-modal');
     const iframe = document.getElementById('cv-iframe');
-    
     if (!modal) return;
-    
-    // Animation de fermeture
     modal.style.opacity = '0';
-    
     setTimeout(() => {
         modal.style.display = 'none';
         modal.classList.add('hidden');
-        
-        // Réactiver le scroll du body
         document.body.style.overflow = 'auto';
-        
-        // Vider l'iframe pour économiser les ressources
         if (iframe) {
             iframe.src = '';
             iframe.classList.remove('loaded');
         }
-        
         console.log('CV fermé');
     }, 300);
 }
 
-// Fermer la modal avec Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const modal = document.getElementById('cv-modal');
@@ -388,26 +293,20 @@ document.addEventListener('keydown', function(e) {
 
 function initializeScrollAnimations() {
     const sections = document.querySelectorAll('.section');
-    
-    // Observer pour les animations d'apparition
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('show');
-                
-                // Animation spéciale pour les cartes UE
                 if (entry.target.id === 'skills') {
                     animateUECards();
                 }
             }
         });
     }, observerOptions);
-    
     sections.forEach(section => {
         observer.observe(section);
     });
@@ -415,12 +314,10 @@ function initializeScrollAnimations() {
 
 function animateUECards() {
     const ueCards = document.querySelectorAll('.ue-card');
-    
     ueCards.forEach((card, index) => {
         setTimeout(() => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(50px) scale(0.9)';
-            
             setTimeout(() => {
                 card.style.transition = 'all 0.6s ease';
                 card.style.opacity = '1';
@@ -434,7 +331,6 @@ function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         const offsetTop = sectionId === 'about' ? section.offsetTop : section.offsetTop - 80;
-        
         window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
@@ -449,30 +345,20 @@ function scrollToSection(sectionId) {
 function initializeContactForm() {
     const form = document.getElementById('contact-form');
     const submitBtn = form ? form.querySelector('.submit-btn') : null;
-    
     if (!form || !submitBtn) return;
-    
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Récupérer les données du formulaire
         const formData = new FormData(form);
-        const nom = formData.get('nom') || document.getElementById('user_name').value;
-        const email = formData.get('email') || document.getElementById('user_email').value;
-        const message = formData.get('message') || document.getElementById('user_message').value;
-        
-        // Validation simple
+        const nom = formData.get('nom') || document.getElementById('user_name')?.value;
+        const email = formData.get('email') || document.getElementById('user_email')?.value;
+        const message = formData.get('message') || document.getElementById('user_message')?.value;
         if (!nom || !email || !message) {
             showNotification('Veuillez remplir tous les champs', 'error');
             return;
         }
-        
-        // Animation du bouton
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
         submitBtn.disabled = true;
-        
-        // Créer le lien mailto
         const subject = encodeURIComponent(`Contact Portfolio - ${nom}`);
         const body = encodeURIComponent(`
 Nom: ${nom}
@@ -484,31 +370,20 @@ ${message}
 ---
 Envoyé depuis le portfolio de Hunt Arnaud
         `);
-        
         const mailtoLink = `mailto:hunt.arnaud@example.com?subject=${subject}&body=${body}`;
-        
-        // Simulation d'envoi puis ouverture du client email
         setTimeout(() => {
-            // Ouvrir le client email
             window.location.href = mailtoLink;
-            
-            // Message de confirmation
             showNotification('Votre client email va s\'ouvrir', 'success');
-            
-            // Reset du formulaire et du bouton
             form.reset();
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }, 1500);
     });
-    
-    // Effets sur les champs de saisie
     const inputs = form.querySelectorAll('input, textarea');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.style.transform = 'translateY(-2px)';
         });
-        
         input.addEventListener('blur', function() {
             this.parentElement.style.transform = 'translateY(0)';
         });
@@ -526,8 +401,6 @@ function showNotification(message, type = 'info') {
         <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info'}"></i>
         <span>${message}</span>
     `;
-    
-    // Styles
     Object.assign(notification.style, {
         position: 'fixed',
         top: '20px',
@@ -550,22 +423,15 @@ function showNotification(message, type = 'info') {
         maxWidth: '300px',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
     });
-    
-    // Couleurs selon le type
     if (type === 'success') {
         notification.style.borderColor = 'rgba(76, 175, 80, 0.5)';
     } else if (type === 'error') {
         notification.style.borderColor = 'rgba(244, 67, 54, 0.5)';
     }
-    
     document.body.appendChild(notification);
-    
-    // Animation d'entrée
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 100);
-    
-    // Auto-suppression
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
         setTimeout(() => {
@@ -582,10 +448,7 @@ function showNotification(message, type = 'info') {
 
 function initializeScrollToTop() {
     const scrollBtn = document.getElementById('scroll-to-top');
-    
     if (!scrollBtn) return;
-    
-    // Afficher/masquer selon le scroll
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
             scrollBtn.classList.add('show');
@@ -593,15 +456,11 @@ function initializeScrollToTop() {
             scrollBtn.classList.remove('show');
         }
     });
-    
-    // Action du bouton
     scrollBtn.addEventListener('click', function() {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
-        
-        // Animation du bouton
         this.style.transform = 'scale(0.9)';
         setTimeout(() => {
             this.style.transform = 'scale(1)';
@@ -613,12 +472,9 @@ function initializeScrollToTop() {
 // EFFETS VISUELS AVANCÉS
 // ===============================
 
-// Parallax léger sur les éléments glass
 window.addEventListener('scroll', function() {
     const scrolled = window.pageYOffset;
-    const glassElements = document.querySelectorAll('.glass-container');
-    
-    glassElements.forEach((element, index) => {
+    document.querySelectorAll('.glass-container').forEach((element, index) => {
         const speed = (index % 2 === 0) ? 0.02 : -0.02;
         const yPos = scrolled * speed;
         element.style.transform = `translateY(${yPos}px)`;
@@ -640,7 +496,6 @@ window.addEventListener('error', function(e) {
 function handleMobileNavigation() {
     const isMobile = window.innerWidth <= 768;
     const navLinks = document.getElementById('nav-links');
-    
     if (isMobile && navLinks) {
         navLinks.style.width = '100vw';
         navLinks.style.left = '-100vw';
